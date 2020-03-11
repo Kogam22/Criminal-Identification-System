@@ -1,0 +1,8 @@
+.vscode/
+__pycache__/
+face_samples/
+dataset/
+profile_pics/
+env/
+
+# .env

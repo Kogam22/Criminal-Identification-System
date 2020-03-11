@@ -50,7 +50,7 @@ def goBack():
 def basicPageSetup(pageNo):
     global left_frame, right_frame, heading
 
-    back_img = tk.PhotoImage(file="back.png")
+    back_img = tk.PhotoImage(file="assets/back.png")
     back_button = tk.Button(pages[pageNo], image=back_img, bg="#202d42", bd=0, highlightthickness=0,
            activebackground="#202d42", command=goBack)
     back_button.image = back_img
@@ -77,10 +77,21 @@ def basicPageSetup(pageNo):
 def showImage(frame, img_size):
     global img_label, left_frame
 
-    img = cv2.resize(frame, (img_size, img_size))
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img = Image.fromarray(img)
-    img = ImageTk.PhotoImage(img)
+
+    img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    im_pil = Image.fromarray(img)
+
+    old_size = im_pil.size
+
+    new_size = (img_size, img_size)
+    new_im = Image.new("RGB", new_size)   ## luckily, this is already black!
+    new_im.paste(im_pil, (int((new_size[0]-old_size[0])/2),
+                        int((new_size[1]-old_size[1])/2)))
+
+
+    # img = cv2.resize(frame, (img_size, img_size))
+    # img = Image.fromarray(img)
+    img = ImageTk.PhotoImage(new_im)
     if (img_label == None):
         img_label = tk.Label(left_frame, image=img, bg="#202d42")
         img_label.image = img
@@ -143,8 +154,8 @@ def selectMultiImage(opt_menu, menu_var):
         slide_control_panel = tk.Frame(left_frame, bg="#202d42", pady=20)
         slide_control_panel.pack()
 
-        back_img = tk.PhotoImage(file="previous.png")
-        next_img = tk.PhotoImage(file="next.png")
+        back_img = tk.PhotoImage(file="assets/previous.png")
+        next_img = tk.PhotoImage(file="assets/next.png")
 
         prev_slide = tk.Button(slide_control_panel, image=back_img, bg="#202d42", bd=0, highlightthickness=0,
                             activebackground="#202d42", command=lambda : getNewSlide("prev"))
@@ -164,6 +175,8 @@ def selectMultiImage(opt_menu, menu_var):
 def register(entries, required, menu_var):
     global img_list
 
+    firstTime()
+
     # Checking if no image selected
     if(len(img_list) == 0):
         messagebox.showerror("Error", "Select Images first.")
@@ -181,6 +194,10 @@ def register(entries, required, menu_var):
             entry_data[entry[0]] = val.lower()
 
 
+    # Check if face_samples exists
+    if not os.path.isdir("face_samples"):
+        os.mkdir("face_samples")
+    
     # Setting Directory
     path = os.path.join('face_samples', "temp_criminal")
     if not os.path.isdir(path):
@@ -481,13 +498,14 @@ def getPage3():
     thread_event = threading.Event()
     thread = threading.Thread(target=videoLoop, args=(model, names))
     thread.start()
-
+    
+    videoLoop(model, names)
 
 ######################################## Home Page ####################################
 tk.Label(pages[0], text="Criminal Identification System", fg="white", bg="#202d42",
       font="Arial 35 bold", pady=30).pack()
 
-logo = tk.PhotoImage(file = "logo.png")
+logo = tk.PhotoImage(file = "assets/logo.png")
 tk.Label(pages[0], image=logo, bg="#202d42").pack()
 
 btn_frame = tk.Frame(pages[0], bg="#202d42", pady=30)
