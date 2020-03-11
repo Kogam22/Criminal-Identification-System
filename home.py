@@ -79,10 +79,10 @@ def showImage(frame, window_size):
 
 
     img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    im_pil = Image.fromarray(img)
+    img = Image.fromarray(img)
 
-    old_size = im_pil.size
-    width, height = im_pil.size
+    old_size = img.size
+    width, height = img.size
 
     new_size = (window_size, window_size)
 
@@ -93,11 +93,11 @@ def showImage(frame, window_size):
         if new_width <= 0 or new_height <= 0:
             return
 
-        new_im = im_pil.resize((new_width, new_height), Image.ANTIALIAS)
+        new_im = img.resize((new_width, new_height), Image.ANTIALIAS)
     
     else:
         new_im = Image.new("RGB", new_size)   ## luckily, this is already black!
-        new_im.paste(im_pil, (int((new_size[0]-old_size[0])/2),
+        new_im.paste(img, (int((new_size[0]-old_size[0])/2),
                             int((new_size[1]-old_size[1])/2)))
 
 

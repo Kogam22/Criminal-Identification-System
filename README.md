@@ -23,4 +23,4 @@
     ```bash
     python home.py
     ```
-
+- When you open **Video Surveillance**, there will be some weird problem where the window gets stuck. Go to the terminal and press `Ctrl + C` to solve it.
