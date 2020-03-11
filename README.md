@@ -7,15 +7,18 @@
 - Set username and password
 - Create database `criminaldb`
     - ```sql
-      create database criminaldb;```
+      create database criminaldb;
+      ```
 - Update the database username and password in the `.env` file.
 - Open powershell and create new virtual environment and activate it
     ```bash 
     python -m venv env
-    source env\Scripts\activate.ps1```
+    source env\Scripts\activate.ps1
+    ```
 - Install the requirements
     ```bash
-    pip install -r requirements.txt```
+    pip install -r requirements.txt
+    ```
 - Run the program
     ```bash
     python home.py
