@@ -74,7 +74,7 @@ def basicPageSetup(pageNo):
     content.grid_rowconfigure(0, weight=1)
 
 
-def showImage(frame, img_size):
+def showImage(frame, window_size):
     global img_label, left_frame
 
 
@@ -82,14 +82,26 @@ def showImage(frame, img_size):
     im_pil = Image.fromarray(img)
 
     old_size = im_pil.size
+    width, height = im_pil.size
 
-    new_size = (img_size, img_size)
-    new_im = Image.new("RGB", new_size)   ## luckily, this is already black!
-    new_im.paste(im_pil, (int((new_size[0]-old_size[0])/2),
-                        int((new_size[1]-old_size[1])/2)))
+    new_size = (window_size, window_size)
+
+    if width > window_size:
+        new_width  = window_size
+        new_height = int(new_width * height / width)
+
+        if new_width <= 0 or new_height <= 0:
+            return
+
+        new_im = im_pil.resize((new_width, new_height), Image.ANTIALIAS)
+    
+    else:
+        new_im = Image.new("RGB", new_size)   ## luckily, this is already black!
+        new_im.paste(im_pil, (int((new_size[0]-old_size[0])/2),
+                            int((new_size[1]-old_size[1])/2)))
 
 
-    # img = cv2.resize(frame, (img_size, img_size))
+    # img = cv2.resize(frame, (window_size, window_size))
     # img = Image.fromarray(img)
     img = ImageTk.PhotoImage(new_im)
     if (img_label == None):
@@ -110,8 +122,8 @@ def getNewSlide(control):
         else:
             current_slide = (current_slide+1) % len(img_list)
 
-        img_size = left_frame.winfo_height() - 200
-        showImage(img_list[current_slide], img_size)
+        window_size = left_frame.winfo_height() - 200
+        showImage(img_list[current_slide], window_size)
 
         slide_caption.configure(text = "Image {} of {}".format(current_slide+1, len(img_list)))
 
@@ -147,9 +159,9 @@ def selectMultiImage(opt_menu, menu_var):
 
 
         # Creating slideshow of images
-        img_size =  left_frame.winfo_height() - 200
+        window_size =  left_frame.winfo_height() - 200
         current_slide += 1
-        showImage(img_list[current_slide], img_size)
+        showImage(img_list[current_slide], window_size)
 
         slide_control_panel = tk.Frame(left_frame, bg="#202d42", pady=20)
         slide_control_panel.pack()
@@ -376,9 +388,9 @@ def startRecognition():
         print('Training Successful. Detecting Faces')
         (frame, recognized) = recognize_face(model, frame, gray_frame, face_coords, names)
 
-        img_size = left_frame.winfo_height() - 40
+        window_size = left_frame.winfo_height() - 40
         frame = cv2.flip(frame, 1, 0)
-        showImage(frame, img_size)
+        showImage(frame, window_size)
 
         if (len(recognized) == 0):
             messagebox.showerror("Error", "No criminal recognized.")
@@ -402,8 +414,8 @@ def selectImage():
     if(len(path) > 0):
         img_read = cv2.imread(path)
 
-        img_size =  left_frame.winfo_height() - 40
-        showImage(img_read, img_size)
+        window_size =  left_frame.winfo_height() - 40
+        showImage(img_read, window_size)
 
 
 ## Detection Page ##
@@ -471,9 +483,9 @@ def videoLoop(model, names):
                 old_recognized = recog_names
 
             # Display Video stream
-            img_size = min(left_frame.winfo_width(), left_frame.winfo_height()) - 20
+            window_size = min(left_frame.winfo_width(), left_frame.winfo_height()) - 20
 
-            showImage(frame, img_size)
+            showImage(frame, window_size)
 
     except RuntimeError:
         print("[INFO]Caught Runtime Error")
