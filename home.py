@@ -530,7 +530,7 @@ tk.Button(btn_frame, text="Video Surveillance", command=getPage3)
 for btn in btn_frame.winfo_children():
     btn.configure(font="Arial 20", width=17, bg="#2196f3", fg="white",
         pady=5, bd=0, highlightthickness=0, activebackground="#091428", activeforeground="white")
-    btn.pack(pady=10)
+    btn.pack(pady=5)
 
 
 
