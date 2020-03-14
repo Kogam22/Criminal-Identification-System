@@ -23,7 +23,7 @@ slide_control_panel = None
 current_slide = -1
 
 root = tk.Tk()
-root.geometry("1500x900+200+100")
+root.geometry("1200x700+10+10")
 
 # create Pages
 pages = []
@@ -520,7 +520,7 @@ tk.Label(pages[0], text="Criminal Identification System", fg="white", bg="#202d4
 logo = tk.PhotoImage(file = "assets/logo.png")
 tk.Label(pages[0], image=logo, bg="#202d42").pack()
 
-btn_frame = tk.Frame(pages[0], bg="#202d42", pady=30)
+btn_frame = tk.Frame(pages[0], bg="#202d42", pady=15)
 btn_frame.pack()
 
 tk.Button(btn_frame, text="Register Criminal", command=getPage1)
@@ -529,8 +529,8 @@ tk.Button(btn_frame, text="Video Surveillance", command=getPage3)
 
 for btn in btn_frame.winfo_children():
     btn.configure(font="Arial 20", width=17, bg="#2196f3", fg="white",
-        pady=15, bd=0, highlightthickness=0, activebackground="#091428", activeforeground="white")
-    btn.pack(pady=30)
+        pady=5, bd=0, highlightthickness=0, activebackground="#091428", activeforeground="white")
+    btn.pack(pady=10)
 
 
 
