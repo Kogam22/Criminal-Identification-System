@@ -1,16 +1,18 @@
-import pymysql
+import mysql.connector
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-host = os.environ.get("db-host") or "localhost"
-user = os.environ.get("username")
-password = os.environ.get("password")
-database = os.environ.get("database")
+HOST = os.environ.get("db-host")
+USERNAME = os.environ.get("db-user")
+PASSWORD = os.environ.get("db-password")
+DATABASE = os.environ.get("db-database")
+
+
 
 def firstTime():
-    db = pymysql.connect(host, user, password, database)
+    db = mysql.connector.connect(host=HOST , user=USERNAME, password=PASSWORD, database=DATABASE, auth_plugin='mysql_native_password')
     cursor = db.cursor()
 
     try:
@@ -41,7 +43,7 @@ def firstTime():
 def insertData(data):
     rowId = 0
 
-    db = pymysql.connect(host, user, password, database)
+    db = mysql.connector.connect(host=HOST , user=USERNAME, password=PASSWORD, database=DATABASE, auth_plugin='mysql_native_password')
     cursor = db.cursor()
     print("database connected")
 
@@ -68,7 +70,7 @@ def retrieveData(name):
     id = None
     crim_data = None
 
-    db = pymysql.connect(host, user, password, database)
+    db = mysql.connector.connect(host=HOST , user=USERNAME, password=PASSWORD, database=DATABASE, auth_plugin='mysql_native_password')
     cursor = db.cursor()
     print("database connected")
 
